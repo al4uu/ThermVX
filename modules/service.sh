@@ -75,3 +75,13 @@ done
 find /sys/ -type f -name "*throttling*" | while IFS= read -r throttling; do
     [ -w "$throttling" ] && echo 0 > "$throttling" 2>/dev/null
 done
+
+find /sys/ -name enabled | grep 'msm_thermal' | while IFS= read -r msm_thermal_status; do
+    if [ -r "$msm_thermal_status" ]; then
+        msm_thermal_value=$(cat "$msm_thermal_status")
+        case "$msm_thermal_value" in
+            Y) echo 'N' > "$msm_thermal_status" 2>/dev/null ;;
+            1) echo '0' > "$msm_thermal_status" 2>/dev/null ;;
+        esac
+    fi
+done
