@@ -115,3 +115,9 @@ if [ -f "/proc/gpufreq/gpufreq_power_limited" ]; then
 	echo "ignore_thermal_protect 1" >> /proc/gpufreq/gpufreq_power_limited
 	echo "ignore_pbm_limited 1" >> /proc/gpufreq/gpufreq_power_limited
 fi
+
+for svc in logd thermal thermal-engine mi_thermald; do
+    if getprop init.svc.$svc | grep -q "running"; then
+        su -c "stop $svc"
+    fi
+done
