@@ -85,3 +85,33 @@ find /sys/ -name enabled | grep 'msm_thermal' | while IFS= read -r msm_thermal_s
         esac
     fi
 done
+
+if [ -f /proc/driver/thermal/tzcpu ]; then
+	t_limit="125"
+	no_cooler="0 0 no-cooler"
+	
+	for tz in tzcpu tzpmic tzbattery tzpa tzcharger tzwmt tzbts tzbtsnrpa tzbtspa; do
+		[ -f "/proc/driver/thermal/$tz" ] && echo "1 ${t_limit}000 0 mtktscpu-sysrst $no_cooler 200" > "/proc/driver/thermal/$tz"
+	done
+fi
+
+if [ -f /sys/devices/virtual/thermal/thermal_message/cpu_limits ]; then
+	for i in 0 2 4 6 7; do
+		maxfreq=$(cat /sys/devices/system/cpu/cpu$i/cpufreq/cpuinfo_max_freq 2>/dev/null)
+		[ -n "$maxfreq" ] && [ "$maxfreq" -gt 0 ] && echo "cpu$i $maxfreq" > /sys/devices/virtual/thermal/thermal_message/cpu_limits
+	done
+fi
+
+if [ -d /proc/ppm ]; then
+	while read -r idx; do
+		echo "$idx 0" > /proc/ppm/policy_status
+	done < <(awk -F'[][]' '/PWR_THRO|THERMAL/ {print $2}' /proc/ppm/policy_status)
+fi
+
+if [ -f "/proc/gpufreq/gpufreq_power_limited" ]; then
+	echo "ignore_batt_oc 1" > /proc/gpufreq/gpufreq_power_limited
+	echo "ignore_batt_percent 1" >> /proc/gpufreq/gpufreq_power_limited
+	echo "ignore_low_batt 1" >> /proc/gpufreq/gpufreq_power_limited
+	echo "ignore_thermal_protect 1" >> /proc/gpufreq/gpufreq_power_limited
+	echo "ignore_pbm_limited 1" >> /proc/gpufreq/gpufreq_power_limited
+fi
