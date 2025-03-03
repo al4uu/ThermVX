@@ -132,3 +132,5 @@ echo "N" > /sys/module/msm_thermal/parameters/enabled
 echo "0" > /sys/module/msm_thermal/core_control/enabled
 echo "0" > /sys/module/msm_thermal/vdd_restriction/enabled
 echo "stop 1" > /proc/mtk_batoc_throttling/battery_oc_protect_stop
+
+command -v cmd >/dev/null 2>&1 && cmd thermalservice override-status 0
