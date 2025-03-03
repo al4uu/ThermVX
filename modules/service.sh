@@ -125,3 +125,10 @@ done
 resetprop -n debug.thermal.throttle.support "no"
 
 find /sys/devices/virtual/thermal -type f -exec chmod 000 {} +
+
+echo "0" > /sys/kernel/msm_thermal/enabled
+echo "0" > /sys/class/kgsl/kgsl-3d0/throttling
+echo "N" > /sys/module/msm_thermal/parameters/enabled
+echo "0" > /sys/module/msm_thermal/core_control/enabled
+echo "0" > /sys/module/msm_thermal/vdd_restriction/enabled
+echo "stop 1" > /proc/mtk_batoc_throttling/battery_oc_protect_stop
