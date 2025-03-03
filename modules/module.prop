@@ -1,7 +1,7 @@
 id=thermvx
 name=ThermVX カスタマイズ
-version=1.0 (1.0-hash-release)
-versionCode=1
+version=1.0 (100-f2ea5ac-release)
+versionCode=100
 author=@al4uu
 description=Eliminates thermal limitations for unrestricted usage !
 updateJson=https://raw.githubusercontent.com/al4uu/ThermVX/fx/update.json
