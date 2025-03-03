@@ -58,3 +58,9 @@ for zone in /sys/class/thermal/thermal_zone*; do
     [ -w "$zone/mode" ] && echo "disabled" > "$zone/mode" 2>/dev/null
     [ -w "$zone/policy" ] && echo "step_wise" > "$zone/policy" 2>/dev/null
 done
+
+if command -v resetprop >/dev/null 2>&1; then
+    for prop in $(resetprop | grep 'thermal.*running' | awk -F '[][]' '{print $2}'); do
+        resetprop "$prop" freezed >/dev/null 2>&1
+    done
+fi
