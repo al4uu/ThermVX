@@ -134,3 +134,8 @@ echo "0" > /sys/module/msm_thermal/vdd_restriction/enabled
 echo "stop 1" > /proc/mtk_batoc_throttling/battery_oc_protect_stop
 
 command -v cmd >/dev/null 2>&1 && cmd thermalservice override-status 0
+
+su -lp 2000 -c "cmd notification post -t 'ThermVX' \
+    -i 'file:///data/local/tmp/thermvx.png' \
+    -I 'file:///data/local/tmp/thermvx.png' \
+    'default' 'ThermVX is active and running.'" > /dev/null 2>&1
