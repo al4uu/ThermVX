@@ -4,3 +4,4 @@ version=1.0 (1.0-hash-release)
 versionCode=1
 author=@al4uu
 description=Eliminates thermal limitations for unrestricted usage !
+updateJson=https://raw.githubusercontent.com/al4uu/ThermVX/fx/update.json
