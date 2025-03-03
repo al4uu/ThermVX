@@ -64,3 +64,10 @@ if command -v resetprop >/dev/null 2>&1; then
         resetprop "$prop" freezed >/dev/null 2>&1
     done
 fi
+
+for prop in dalvik.vm.dexopt.thermal-cutoff sys.thermal.enable ro.thermal_warmreset; do
+    case "$prop" in
+        dalvik.vm.dexopt.thermal-cutoff) resetprop "$prop" 0 >/dev/null 2>&1 ;;
+        sys.thermal.enable|ro.thermal_warmreset) resetprop "$prop" false >/dev/null 2>&1 ;;
+    esac
+done
