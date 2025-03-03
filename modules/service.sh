@@ -71,3 +71,7 @@ for prop in dalvik.vm.dexopt.thermal-cutoff sys.thermal.enable ro.thermal_warmre
         sys.thermal.enable|ro.thermal_warmreset) resetprop "$prop" false >/dev/null 2>&1 ;;
     esac
 done
+
+find /sys/ -type f -name "*throttling*" | while IFS= read -r throttling; do
+    [ -w "$throttling" ] && echo 0 > "$throttling" 2>/dev/null
+done
