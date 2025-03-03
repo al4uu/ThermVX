@@ -31,3 +31,25 @@ fi
 if [ -f "$MODULE_PROP" ]; then
     sed -i "s/^description=.*/description=[ 🔥 Thermal Is Dead | ✅ ${ROOT_METHOD} (${ROOT_VERSION}) ] Eliminates thermal limitations for unrestricted usage !/" "$MODULE_PROP"
 fi
+
+while [ -z "$(resetprop sys.boot_completed)" ]; do
+    sleep 5
+done
+
+exec 1>/dev/null 2>/dev/null
+
+stop_services() { 
+    for _ in 1 2; do 
+        for prop in $(getprop | awk -F'[][]' '/logd|thermal/ && !/hal/ {print $2}'); do 
+            status=$(getprop "$prop") 
+            if [ "$status" = "running" ] || [ "$status" = "restarting" ]; then 
+                setprop "ctl.stop" "${prop#init.svc.}" 
+                stop "${prop#init.svc.}" 
+                sleep 1 
+            fi 
+        done 
+        sleep 5 
+    done 
+}
+
+stop_services
