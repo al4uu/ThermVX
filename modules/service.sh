@@ -121,3 +121,7 @@ for svc in logd thermal thermal-engine mi_thermald; do
         su -c "stop $svc"
     fi
 done
+
+resetprop -n debug.thermal.throttle.support "no"
+
+find /sys/devices/virtual/thermal -type f -exec chmod 000 {} +
